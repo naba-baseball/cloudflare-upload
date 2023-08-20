@@ -1,7 +1,31 @@
-import { Hono } from 'hono'
+import {
+  createApp,
+  eventHandler,
+  toWebHandler,
+  createRouter,
+  lazyEventHandler,
+  toWebRequest,
+  sendRedirect,
+} from "h3";
 
-const app = new Hono()
+const router = createRouter().post(
+  "/upload",
+  lazyEventHandler(() =>
+    eventHandler(async (event) => {
+      const request = toWebRequest(event);
+      await event.context.ROSTER_BUCKET.put("reports.tar.gz", request.body);
+      return sendRedirect(event, "http://localhost:8000/");
+    })
+  )
+);
 
-app.get('/', (c) => c.text('Hello Hono!'))
 
-export default app
+const app = createApp();
+app.use(router);
+const handler = toWebHandler(app);
+
+export default {
+  fetch(request, env, ctx) {
+    return handler(request, env);
+  },
+};
