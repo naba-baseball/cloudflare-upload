@@ -13,8 +13,10 @@ const router = createRouter().post(
   lazyEventHandler(() =>
     eventHandler(async (event) => {
       const request = toWebRequest(event);
+      const data = await request.formData();
+      const file = data.get("file") as File;
       try {
-        await event.context.ROSTER_BUCKET.put("reports.tar.gz", request.body);
+        await event.context.ROSTER_BUCKET.put("reports.tar.gz", file.stream());
       } catch (err) {
         return sendRedirect(
           event,
