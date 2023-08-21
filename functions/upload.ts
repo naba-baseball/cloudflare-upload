@@ -4,6 +4,7 @@ const html = htm.bind(vhtml);
 import type { PagesFunction, R2Bucket } from "@cloudflare/workers-types";
 interface Env {
   ROSTER_BUCKET: R2Bucket;
+  DEPLOY_URL: string
 }
 
 export const onRequestPost: PagesFunction<Env> = async (context) => {
@@ -27,7 +28,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
   }
   //don't await so we can redirect sooner
   fetch(
-    "https://api.cloudflare.com/client/v4/pages/webhooks/deploy_hooks/c0a39e7b-9e5f-4dc9-a98e-31dcc0b8e1ab",
+    env.DEPLOY_URL,
     {
       method: "POST",
     }
