@@ -27,7 +27,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
   }
   //don't await so we can redirect sooner
   fetch(
-    "https://api.cloudflare.com/client/v4/pages/webhooks/deploy_hooks/488107d0-9e20-4068-ad8b-ca193b725cf1",
+    "https://api.cloudflare.com/client/v4/pages/webhooks/deploy_hooks/c0a39e7b-9e5f-4dc9-a98e-31dcc0b8e1ab",
     {
       method: "POST",
     }
