@@ -8,13 +8,13 @@
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20230814.0",
     "@types/fs-extra": "^11.0.1",
-    "node^20": "link:@types/node^20",
     "typescript": "^5.1.6",
     "wrangler": "^3.5.1"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.395.0",
     "@aws-sdk/s3-request-presigner": "^3.395.0",
+    "@types/node": "^20.5.1",
     "browser-stream-tar": "^1.2.4",
     "dotenv": "^16.3.1",
     "fs-extra": "^11.1.1",
