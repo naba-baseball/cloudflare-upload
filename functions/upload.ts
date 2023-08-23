@@ -4,14 +4,13 @@ const html = htm.bind(vhtml);
 import type { PagesFunction, R2Bucket } from "@cloudflare/workers-types";
 interface Env {
   ROSTER_BUCKET: R2Bucket;
-  DEPLOY_URL: string
+  DEPLOY_URL: string;
+  USERNAME: string;
+  PASSWORD: string;
 }
 
 export const onRequestPost: PagesFunction<Env> = async (context) => {
   const { request, env } = context;
-  if (request.method !== "POST" || !request.url.endsWith("/upload"))
-    return new Response(null, { status: 404 });
-  const referrer = request.headers.get("referer");
   const data = await request.formData();
   const file = data.get("file") as File;
   try {
@@ -27,12 +26,9 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     });
   }
   //don't await so we can redirect sooner
-  fetch(
-    env.DEPLOY_URL,
-    {
-      method: "POST",
-    }
-  );
+  fetch(env.DEPLOY_URL, {
+    method: "POST",
+  });
   return new Response(null, {
     status: 301,
     headers: {
@@ -41,9 +37,31 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
   });
 };
 
+
+
 export const onRequestGet: PagesFunction<Env> = async (context) => {
+  const unauthorizedResponse = new Response("401", {
+    status: 401,
+    headers: {
+      "content-type": "text/html",
+      "WWW-Authenticate": "Basic",
+      Vary: "Accept-Encoding",
+    },
+  });
+  const authorization = context.request.headers.get("Authorization");
+  if (!authorization) {
+    return unauthorizedResponse;
+  }
+  const [username, password] = atob(authorization.split(" ")[1]).split(":");
+  if (username !== context.env.USERNAME || password !== context.env.PASSWORD) {
+    return unauthorizedResponse;
+  }
   return new Response(renderUploadPage(), {
-    headers: { "content-type": "text/html" },
+    status: 200,
+    headers: {
+      "content-type": "text/html",
+      Vary: "Accept-Encoding",
+    },
   });
 };
 
@@ -72,7 +90,7 @@ function renderUploadPage() {
           >
             <div class="stack">
               <h1>Upload the zip file here.</h1>
-              <p>It might several minutes</p>
+              <p>It might take several minutes</p>
               <label>
                 File
                 <input name="file" type="file" />
