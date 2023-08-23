@@ -2,7 +2,6 @@
   "type": "module",
   "scripts": {
     "dev": "wrangler pages dev dist/news/html",
-    "deploy": "wrangler deploy --minify src/index.ts",
     "build": "node src/build.js"
   },
   "devDependencies": {
