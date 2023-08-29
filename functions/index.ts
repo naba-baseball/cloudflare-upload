@@ -77,8 +77,8 @@ function renderUploadPage() {
             content="width=device-width, initial-scale=1.0"
           />
           <title>Upload</title>
-          <link href="/public/styles.css" rel="stylesheet" />
-          <script src="/public/upload.js" type="module"></script>
+          <link href="/styles.css" rel="stylesheet" />
+          <script src="/upload.js" type="module"></script>
         </head>
 
         <body class="u-container">

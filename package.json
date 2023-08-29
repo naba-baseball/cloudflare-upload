@@ -1,8 +1,7 @@
 {
   "type": "module",
   "scripts": {
-    "dev": "wrangler pages dev dist/news/html",
-    "build": "node src/build.js"
+    "dev": "wrangler pages dev public"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20230814.0",
