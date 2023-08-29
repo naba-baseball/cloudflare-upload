@@ -89,7 +89,7 @@ function renderUploadPage() {
             enctype="multipart/form-data"
           >
             <div class="stack">
-              <h1>Upload the zip file here.</h1>
+              <h1>Upload the reports file here.</h1>
               <p>It might take several minutes</p>
               <label>
                 File
