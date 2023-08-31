@@ -2,11 +2,13 @@ import vhtml from "vhtml";
 import htm from "htm";
 const html = htm.bind(vhtml);
 import type { PagesFunction, R2Bucket } from "@cloudflare/workers-types";
+import { executeDiscordWebhook } from "../utils/execute-discord-webhook.js";
 interface Env {
   ROSTER_BUCKET: R2Bucket;
   DEPLOY_URL: string;
   USERNAME: string;
   PASSWORD: string;
+  DISCORD_WEBHOOK: string;
 }
 
 export const onRequestPost: PagesFunction<Env> = async (context) => {
@@ -14,8 +16,16 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
   const data = await request.formData();
   const file = data.get("file") as File;
   try {
+    executeDiscordWebhook(
+      env.DISCORD_WEBHOOK,
+      "Report file upload in progress. If <@392136945188208643> is doing it, it could take a few years."
+    );
     await env.ROSTER_BUCKET.put("reports.tar.gz", file.stream());
   } catch (err) {
+    executeDiscordWebhook(
+      env.DISCORD_WEBHOOK,
+      "Report file failed to upload :("
+    );
     return new Response(null, {
       status: 301,
       headers: {
@@ -25,6 +35,10 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       },
     });
   }
+  executeDiscordWebhook(
+    env.DISCORD_WEBHOOK,
+    "Report file successfully uploaded!"
+  );
   //don't await so we can redirect sooner
   fetch(env.DEPLOY_URL, {
     method: "POST",
@@ -36,8 +50,6 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     },
   });
 };
-
-
 
 export const onRequestGet: PagesFunction<Env> = async (context) => {
   const unauthorizedResponse = new Response("401", {
