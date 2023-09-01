@@ -16,10 +16,6 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
   const data = await request.formData();
   const file = data.get("file") as File;
   try {
-    executeDiscordWebhook(
-      env.DISCORD_WEBHOOK,
-      "Report file upload in progress."
-    );
     await env.ROSTER_BUCKET.put("reports.tar.gz", file.stream());
   } catch (err) {
     executeDiscordWebhook(
@@ -35,10 +31,6 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       },
     });
   }
-  executeDiscordWebhook(
-    env.DISCORD_WEBHOOK,
-    "Report file successfully uploaded!"
-  );
   //don't await so we can redirect sooner
   fetch(env.DEPLOY_URL, {
     method: "POST",
