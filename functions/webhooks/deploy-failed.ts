@@ -8,7 +8,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
   await fetch(context.env.DISCORD_WEBHOOK, {
     method: "POST",
     body: JSON.stringify({
-      content: "Website build failed!",
+      content: "Website deploy failed!",
     }),
     headers: {
       "Content-Type": "application/json",

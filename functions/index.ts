@@ -18,7 +18,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
   try {
     executeDiscordWebhook(
       env.DISCORD_WEBHOOK,
-      "Report file upload in progress. If <@392136945188208643> is doing it, it could take a few years."
+      "Report file upload in progress."
     );
     await env.ROSTER_BUCKET.put("reports.tar.gz", file.stream());
   } catch (err) {

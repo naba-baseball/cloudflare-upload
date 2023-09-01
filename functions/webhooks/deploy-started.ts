@@ -8,7 +8,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
   await fetch(context.env.DISCORD_WEBHOOK, {
     method: "POST",
     body: JSON.stringify({
-      content: "Website build started. Should be done in a few minutes.",
+      content: "Website deploy started, should be done in a few minutes.",
     }),
     headers: {
       "Content-Type": "application/json",
