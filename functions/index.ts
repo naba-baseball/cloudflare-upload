@@ -31,8 +31,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       },
     });
   }
-  //don't await so we can redirect sooner
-  fetch(env.DEPLOY_URL, {
+  await fetch(env.DEPLOY_URL, {
     method: "POST",
   });
   return new Response(null, {
