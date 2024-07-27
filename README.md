@@ -1,3 +1,9 @@
+# This is no longer used
+
+The file size got too big for the worker.
+
+---
+
 create a wrangler.toml file like this
 ```
 [[r2_buckets]]
